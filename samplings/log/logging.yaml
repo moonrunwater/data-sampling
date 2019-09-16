@@ -1,0 +1,54 @@
+version: 1
+disable_existing_loggers: True
+
+formatters:
+    message:
+        class: logging.Formatter
+        format: "[%(asctime)s] - %(message)s"
+    brief:
+        class: logging.Formatter
+        format: "[%(asctime)s] - [%(name)s] - [%(levelname)s] - %(message)s"
+    precise:
+        class: logging.Formatter
+        format: "[%(asctime)s] [%(threadName)s] [%(name)-4s] [%(levelname)-4s] [%(filename)s:%(lineno)d]: %(message)s"
+        # [%(processName)-10s]
+
+handlers:
+    console:
+        class: logging.StreamHandler # https://docs.python.org/3/library/logging.handlers.html#streamhandler
+        level: DEBUG
+        formatter: precise
+        stream: ext://sys.stdout
+    error:
+        class: logging.handlers.TimedRotatingFileHandler # https://docs.python.org/3/library/logging.handlers.html#timedrotatingfilehandler
+        level: ERROR
+        formatter: precise
+        filename: {log_dir}/error.log
+        encoding: utf8
+        when: D # 1 Day
+        interval: 1
+        backupCount: 10
+        utc: False
+    info:
+        class: logging.handlers.RotatingFileHandler # https://docs.python.org/3/library/logging.handlers.html#rotatingfilehandler
+        level: INFO
+        formatter: precise
+        filename: {log_dir}/info.log
+        mode: a
+        encoding: utf8
+        maxBytes: 104857600 # 100MB
+        backupCount: 10
+    result:
+        class: logging.FileHandler # https://docs.python.org/3/library/logging.handlers.html#filehandler
+        level: INFO
+        formatter: message
+        filename: {log_dir}/result.log
+        mode: a
+        encoding: utf8
+loggers:
+    result:
+        level: INFO
+        handlers: [result]
+root:
+    level: DEBUG
+    handlers: [console, info, error]

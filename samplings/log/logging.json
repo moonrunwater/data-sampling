@@ -1,0 +1,70 @@
+{
+    "version": 1,
+    "disable_existing_loggers": true,
+    "formatters": {
+        "message": {
+            "class": "logging.Formatter",
+            "format": "[%(asctime)s] - %(message)s"
+        },
+        "brief": {
+            "class": "logging.Formatter",
+            "format": "[%(asctime)s] - [%(name)s] - [%(levelname)s] - %(message)s"
+        },
+        "precise": {
+            "class": "logging.Formatter",
+            "format": "[%(asctime)s] [%(threadName)s] [%(name)-4s] [%(levelname)-4s] [%(filename)s:%(lineno)d]: %(message)s"
+        }
+    },
+    "handlers": {
+        "console_handler": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "formatter": "precise"
+        },
+        "error_handler": {
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "level": "ERROR",
+            "formatter": "precise",
+            "filename": "$$LOG_DIR$$/error.log",
+            "encoding": "utf8",
+            "when": "D",
+            "interval": 1,
+            "backupCount": 10,
+            "utc": false
+        },
+        "info_handler": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "level": "INFO",
+            "formatter": "precise",
+            "filename": "$$LOG_DIR$$/info.log",
+            "mode": "a",
+            "encoding": "utf8",
+            "maxBytes": 104857600,
+            "backupCount": 10
+        },
+        "result_handler": {
+            "class": "logging.FileHandler",
+            "level": "INFO",
+            "formatter": "message",
+            "filename": "$$LOG_DIR$$/result.log",
+            "mode": "a",
+            "encoding": "utf8"
+        }
+    },
+    "loggers": {
+        "result": {
+            "level": "INFO",
+            "handlers": [
+                "result_handler"
+            ]
+        }
+    },
+    "root": {
+        "level": "DEBUG",
+        "handlers": [
+            "console_handler",
+            "info_handler",
+            "error_handler"
+        ]
+    }
+}
