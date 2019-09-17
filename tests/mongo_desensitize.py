@@ -10,8 +10,6 @@ MIN_OBJECTID_STR = '000000000000000000000000'
 STEPS = 1000
 
 # http://api.mongodb.com/python/current/api/pymongo/mongo_client.html
-
-
 def mongo_pool(hosts, auth_source, username, password):
     return pymongo.MongoClient('mongodb://' + hosts,
                                authSource=auth_source,
@@ -106,9 +104,10 @@ if __name__ == "__main__":
     parser.add_argument("--steps", required=False, type=int, default=1000, help="query steps, default=1000")
     args = parser.parse_args()
 
+    STEPS = args.steps
+
     mongo = mongo_pool(args.hosts, args.authdb, args.username, args.password)
     db = mongo[args.db]
-    STEPS = args.steps
 
     for col_name in db.list_collection_names():
         if col_name == 'system.profile':
