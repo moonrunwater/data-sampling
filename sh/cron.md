@@ -2,7 +2,8 @@
 
 ```sh
 mkdir -p /tmp/cron/
-echo '00 22 * * * /usr/bin/sh /root/bin/samp.sh > /tmp/cron/samp.sh.log' > /var/spool/cron/root
+# echo '00 22 * * * /usr/bin/sh /root/bin/samp.sh > /tmp/cron/samp.sh.log' > /var/spool/cron/root
+echo '00 0/2 * * * /usr/bin/sh /home/sysop/huohu/python/data-sampling/sh/samp_1by1.sh > /tmp/cron/samp_1by1.sh.log' > /var/spool/cron/root
 
 vi /var/spool/cron/root
 # 00 22 * * * /usr/bin/sh /root/bin/samp.sh > /tmp/cron/samp.sh.log

@@ -64,6 +64,7 @@ def _init():
     parser.add_argument("-t", "--dbtype", required=True, type=str, choices=['mysql', 'pgsql', 'mongo'],
                         help="db type: mysql or pgsql or mongo")
     parser.add_argument("-d", "--database", required=True, type=str, help="database")
+    parser.add_argument("-dd", "--destdatabase", required=True, type=str, help="dest database")
     parser.add_argument("-sh", "--srchostport", required=True, type=str, help="source host:port")
     parser.add_argument("-su", "--srcuserpwd", required=True, type=str, help="source user:password")
     parser.add_argument("-dh", "--desthostport", required=True, type=str, help="destination user:password")
@@ -75,6 +76,7 @@ def _init():
 
     Const.DB_TYPE = args.dbtype.lower()
     Const.DATABASE = args.database.lower()
+    Const.DEST_DATABASE = args.destdatabase.lower()
 
     Const.SAVE_DIR = args.savepath + '/' + Const.DB_TYPE + '/' +  Const.DATABASE + '/'
     if not os.path.exists(Const.SAVE_DIR):
@@ -92,11 +94,11 @@ def _init():
         if Const.DB_TYPE == 'mysql':
             Const.DELIMITER = Const.MYSQL_DELIMITER
             Const.SRC_POOL = base.mysql_pool(src_config, Const.DATABASE)
-            Const.DEST_POOL = base.mysql_pool(dest_config, Const.DATABASE)
+            Const.DEST_POOL = base.mysql_pool(dest_config, Const.DEST_DATABASE)
         else:
             Const.DELIMITER = Const.PGSQL_DELIMITER
             Const.SRC_POOL = base.pgsql_pool(src_config, Const.DATABASE)
-            Const.DEST_POOL = base.pgsql_pool(dest_config, Const.DATABASE)    
+            Const.DEST_POOL = base.pgsql_pool(dest_config, Const.DEST_DATABASE)
     elif Const.DB_TYPE == 'mongo':
         Const.SRC_MONGO = base.mongo_pool(args.srcuserpwd, args.srchostport)
         Const.DEST_MONGO = base.mongo_pool(args.destuserpwd, args.desthostport)
